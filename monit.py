@@ -44,7 +44,11 @@ def setup_logging():
 
 
 def change_log_permissions(log_file_path):
-    subprocess.run(['chmod', '777', log_file_path])
+    try:
+        os.chmod(log_file_path, 0o666)  # Change les droits en 666 (lisible et modifiable par tous)
+        print(f"Permissions du fichier de log modifiées avec succès.")
+    except Exception as e:
+        print(f"Erreur lors de la modification des permissions du fichier de log : {e}")
 
 
 def get_timestamp():
