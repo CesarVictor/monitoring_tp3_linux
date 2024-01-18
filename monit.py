@@ -33,11 +33,18 @@ def create_report_dir():
 def create_log_dir():
     if not os.path.exists(LOG_DIR):
         os.makedirs(LOG_DIR)
+        print("Create log")
 
 
 def setup_logging():
     create_log_dir()
+    log_file_path = os.path.join(LOG_DIR, 'monit.log')
     logging.basicConfig(filename=LOG_FILE, level=logging.INFO, format='%(asctime)s - %(levelname)s: %(message)s')
+    change_log_permissions(log_file_path)
+
+
+def change_log_permissions(log_file_path):
+    subprocess.run(['chmod', '777', log_file_path])
 
 
 def get_timestamp():
@@ -99,7 +106,6 @@ def get_last_report():
 
 
 def get_avg_report(hours):
-    # Placeholder for calculating average report
     pass
 
 
