@@ -37,18 +37,13 @@ def create_log_dir():
 
 
 def setup_logging():
+    change_log_permissions(LOG_DIR)
     create_log_dir()
-    log_file_path = os.path.join(LOG_DIR, 'monit.log')
     logging.basicConfig(filename=LOG_FILE, level=logging.INFO, format='%(asctime)s - %(levelname)s: %(message)s')
-    change_log_permissions(log_file_path)
 
 
 def change_log_permissions(log_file_path):
-    try:
-        os.chmod(log_file_path, 0o666)  # Change les droits en 666 (lisible et modifiable par tous)
-        print(f"Permissions du fichier de log modifiées avec succès.")
-    except Exception as e:
-        print(f"Erreur lors de la modification des permissions du fichier de log : {e}")
+    subprocess.run(['chmod', '777', log_file_path])
 
 
 def get_timestamp():
