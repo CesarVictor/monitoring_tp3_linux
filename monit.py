@@ -64,7 +64,19 @@ def check_resources():
     cpu_usage = psutil.cpu_percent(interval=1)
     tcp_ports = [80, 443]
     port_status = {port: is_port_open(port) for port in tcp_ports}
+    report = create_report(ram_usage, disk_usage, cpu_usage, port_status)
+    save_report(report)
+    return {
+        'timestamp': get_timestamp(),
+        'id': get_unique_id(),
+        'ram_usage': ram_usage,
+        'disk_usage': disk_usage,
+        'cpu_usage': cpu_usage,
+        'port_status': port_status
+    }
 
+
+def create_report(ram_usage, disk_usage, cpu_usage, port_status):
     return {
         'timestamp': get_timestamp(),
         'id': get_unique_id(),
