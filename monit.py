@@ -164,12 +164,12 @@ def main():
     }
 
     if args.command in commands:
-        log_command_call(args.command)
-        result = commands[args.command]()
-        print(result)
         if args.command == 'get_avg':
             result = commands[args.command](args.hours)
             print(result)
+        log_command_call(args.command)
+        result = commands[args.command]()
+        print(result)
     else:
         print("Invalid command")
 
