@@ -26,18 +26,19 @@ def create_monit_dir():
 
 
 def create_report_dir():
+    change_log_permissions(REPORT_DIR)
     if not os.path.exists(REPORT_DIR):
         os.makedirs(REPORT_DIR)
 
 
 def create_log_dir():
+    change_log_permissions(LOG_DIR)
     if not os.path.exists(LOG_DIR):
         os.makedirs(LOG_DIR)
         print("Create log")
 
 
 def setup_logging():
-    change_log_permissions(LOG_DIR)
     create_log_dir()
     logging.basicConfig(filename=LOG_FILE, level=logging.INFO, format='%(asctime)s - %(levelname)s: %(message)s')
 
