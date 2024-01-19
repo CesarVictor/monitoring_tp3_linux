@@ -12,6 +12,10 @@ parser = argparse.ArgumentParser(description='Linux Monitoring Tool')
 parser.add_argument('command', choices=['check', 'list', 'get_last', 'get_avg'],
                     help='Command to execute (check, list, get_last, get_avg)')
 args = parser.parse_args()
+if args.command == 'get_avg':
+    parser.add_argument('--hours', type=int, default=1, help='Number of hours to calculate average')
+    args = parser.parse_args()
+
 
 MONIT_DIR = '/var/monit'
 REPORT_DIR = os.path.join(MONIT_DIR, 'reports')
@@ -114,7 +118,6 @@ def get_last_report():
             return json.load(file)
     else:
         return None
-
 
 
 def get_report_from_last_hours(hours):
