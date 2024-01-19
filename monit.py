@@ -130,7 +130,7 @@ def get_report_from_last_hours(hours):
     return last_hours_reports
 
 
-def get_avg_report(hours):
+def get_avg_report(hours=1):
     last_hours_reports = get_report_from_last_hours(hours)
     if last_hours_reports:
         ram_usage = sum([report['ram_usage'] for report in last_hours_reports]) / len(last_hours_reports)
@@ -157,7 +157,7 @@ def main():
         'check': check_resources,
         'list': list_reports,
         'get_last': get_last_report,
-        'get_avg': get_avg_report
+        'get_avg': get_avg_report()
     }
 
     if args.command in commands:
