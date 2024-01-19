@@ -116,8 +116,36 @@ def get_last_report():
         return None
 
 
+
+def get_report_from_last_hours(hours):
+    reports = list_reports()
+    last_hours_reports = []
+    for report in reports:
+        report_path = os.path.join(REPORT_DIR, report)
+        with open(report_path, 'r') as file:
+            report_data = json.load(file)
+            report_timestamp = datetime.datetime.strptime(report_data['timestamp'], "%Y-%m-%d %H:%M:%S")
+            if report_timestamp > datetime.datetime.now() - datetime.timedelta(hours=hours):
+                last_hours_reports.append(report_data)
+    return last_hours_reports
+
+
 def get_avg_report(hours):
-    pass
+    last_hours_reports = get_report_from_last_hours(hours)
+    if last_hours_reports:
+        ram_usage = sum([report['ram_usage'] for report in last_hours_reports]) / len(last_hours_reports)
+        disk_usage = sum([report['disk_usage'] for report in last_hours_reports]) / len(last_hours_reports)
+        cpu_usage = sum([report['cpu_usage'] for report in last_hours_reports]) / len(last_hours_reports)
+        port_status = {port: sum([report['port_status'][port] for report in last_hours_reports]) / len(last_hours_reports)
+                       for port in last_hours_reports[0]['port_status']}
+        return {
+            'timestamp': get_timestamp(),
+            'id': get_unique_id(),
+            'ram_usage': ram_usage,
+            'disk_usage': disk_usage,
+            'cpu_usage': cpu_usage,
+            'port_status': port_status
+        }
 
 
 def main():
