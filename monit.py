@@ -11,8 +11,6 @@ import logging
 parser = argparse.ArgumentParser(description='Linux Monitoring Tool')
 parser.add_argument('command', choices=['check', 'list', 'get_last', 'get_avg'],
                     help='Command to execute (check, list, get_last, get_avg)')
-parser.add_argument('--hours', type=int, default=1, help='Number of hours for average calculation')
-
 args = parser.parse_args()
 
 MONIT_DIR = '/var/monit'
@@ -118,7 +116,7 @@ def get_last_report():
         return None
 
 
-def get_reports_from_last_hours(hours):
+def get_report_from_last_hours(hours):
     reports = list_reports()
     last_hours_reports = []
     for report in reports:
@@ -132,17 +130,21 @@ def get_reports_from_last_hours(hours):
 
 
 def get_avg_report(hours=1):
-    last_hours_reports = get_reports_from_last_hours(hours)
+    last_hours_reports = get_report_from_last_hours(hours)
     if last_hours_reports:
-        avg_report = {
-            key: sum([report[key] for report in last_hours_reports]) / len(last_hours_reports)
-            for key in last_hours_reports[0].keys()
+        ram_usage = sum([report['ram_usage'] for report in last_hours_reports]) / len(last_hours_reports)
+        disk_usage = sum([report['disk_usage'] for report in last_hours_reports]) / len(last_hours_reports)
+        cpu_usage = sum([report['cpu_usage'] for report in last_hours_reports]) / len(last_hours_reports)
+        port_status = {port: sum([report['port_status'][port] for report in last_hours_reports]) / len(last_hours_reports)
+                       for port in last_hours_reports[0]['port_status']}
+        return {
+            'timestamp': get_timestamp(),
+            'id': get_unique_id(),
+            'ram_usage': ram_usage,
+            'disk_usage': disk_usage,
+            'cpu_usage': cpu_usage,
+            'port_status': port_status
         }
-        avg_report['timestamp'] = get_timestamp()
-        avg_report['id'] = get_unique_id()
-        return avg_report
-    else:
-        return None
 
 
 def main():
@@ -154,7 +156,7 @@ def main():
         'check': check_resources,
         'list': list_reports,
         'get_last': get_last_report,
-        'get_avg': get_avg_report(args.hours)
+        'get_avg': get_avg_report()
     }
 
     if args.command in commands:
