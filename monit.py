@@ -156,7 +156,7 @@ def main():
         'check': check_resources,
         'list': list_reports,
         'get_last': get_last_report,
-        'get_avg': lambda: get_avg_report
+        'get_avg': get_avg_report(1)
     }
 
     if args.command in commands:
