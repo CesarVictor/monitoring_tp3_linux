@@ -1,0 +1,9 @@
+[Unit]
+Description=Run monit.service every 10 minutes
+
+[Timer]
+OnCalendar=*:0/10
+Unit=monit.service
+
+[Install]
+WantedBy=timers.target

@@ -10,6 +10,9 @@ import uuid
 import argparse
 import logging
 
+
+
+
 parser = argparse.ArgumentParser(description='Linux Monitoring Tool')
 parser.add_argument('command', choices=['check', 'list', 'get_last', 'get_avg'],
                     help='Command to execute (check, list, get_last, get_avg)')
@@ -22,7 +25,6 @@ if args.command == 'get_avg' and unknown:
         hours = int(last_arg)
     else:
         hours = 1
-
 
 MONIT_DIR = '/var/monit'
 REPORT_DIR = os.path.join(MONIT_DIR, 'reports')
@@ -37,13 +39,11 @@ def create_monit_dir():
 
 
 def create_report_dir():
-    change_log_permissions(REPORT_DIR)
     if not os.path.exists(REPORT_DIR):
         os.makedirs(REPORT_DIR)
 
 
 def create_log_dir():
-    change_log_permissions(LOG_DIR)
     if not os.path.exists(LOG_DIR):
         os.makedirs(LOG_DIR)
         print("Create log")
@@ -52,10 +52,6 @@ def create_log_dir():
 def setup_logging():
     create_log_dir()
     logging.basicConfig(filename=LOG_FILE, level=logging.INFO, format='%(asctime)s - %(levelname)s: %(message)s')
-
-
-def change_log_permissions(log_file_path):
-    subprocess.run(['chmod', '777', log_file_path])
 
 
 def get_timestamp():
@@ -78,14 +74,7 @@ def check_resources():
     port_status = {port: is_port_open(port) for port in tcp_ports}
     report = create_report(ram_usage, disk_usage, cpu_usage, port_status)
     save_report(report)
-    return {
-        'timestamp': get_timestamp(),
-        'id': get_unique_id(),
-        'ram_usage': ram_usage,
-        'disk_usage': disk_usage,
-        'cpu_usage': cpu_usage,
-        'port_status': port_status
-    }
+    return report
 
 
 def create_report(ram_usage, disk_usage, cpu_usage, port_status):
@@ -147,8 +136,9 @@ def get_avg_report(hours=1):
         ram_usage = sum([report['ram_usage'] for report in last_hours_reports]) / len(last_hours_reports)
         disk_usage = sum([report['disk_usage'] for report in last_hours_reports]) / len(last_hours_reports)
         cpu_usage = sum([report['cpu_usage'] for report in last_hours_reports]) / len(last_hours_reports)
-        port_status = {port: sum([report['port_status'][port] for report in last_hours_reports]) / len(last_hours_reports)
-                       for port in last_hours_reports[0]['port_status']}
+        port_status = {
+            port: sum([report['port_status'][port] for report in last_hours_reports]) / len(last_hours_reports)
+            for port in last_hours_reports[0]['port_status']}
         return {
             'timestamp': get_timestamp(),
             'id': get_unique_id(),

@@ -1,0 +1,10 @@
+[Unit]
+Description=Linux Monitoring Tool
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python /home/user1/monitoring_tp3_linux/monit.py check
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
