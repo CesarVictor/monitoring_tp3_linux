@@ -13,12 +13,11 @@ import logging
 parser = argparse.ArgumentParser(description='Linux Monitoring Tool')
 parser.add_argument('command', choices=['check', 'list', 'get_last', 'get_avg'],
                     help='Command to execute (check, list, get_last, get_avg)')
-args = parser.parse_args()
-
+args, unknown = parser.parse_known_args()
 hours = 1
 
-if args.command == 'get_avg':
-    last_arg = sys.argv[-1]
+if args.command == 'get_avg' and unknown:
+    last_arg = unknown[-1]
     print(last_arg)
     if last_arg.isdigit():
         hours = int(last_arg)
