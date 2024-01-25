@@ -138,7 +138,6 @@ def get_avg_report(hours=1):
             for port in last_hours_reports[0]['port_status']}
         return {
             'timestamp': get_timestamp(),
-            'id': get_unique_id(),
             'ram_usage': ram_usage,
             'disk_usage': disk_usage,
             'cpu_usage': cpu_usage,
