@@ -40,9 +40,11 @@ def create_report_dir():
     if not os.path.exists(REPORT_DIR):
         os.makedirs(REPORT_DIR)
 
+
 def create_config_dir():
     if not os.path.exists(CONFIG_DIR):
         os.makedirs(CONFIG_DIR)
+
 
 def create_log_dir():
     if not os.path.exists(LOG_DIR):
@@ -79,21 +81,23 @@ def get_unique_id():
 def log_command_call(command):
     logging.info(f"Command called: {command}")
 
+
 def load_config(file_path):
-    if not os.path.exists(file_path):
+    create_config_file()
     try:
-        with open(file_path, 'r') as config_file:
+        with open(CONFIG_FILE, 'r') as config_file:
             config_data = json.load(config_file)
         return config_data
     except FileNotFoundError:
         print(f"Config file not found at {file_path}")
         sys.exit(1)
 
+
 def send_alert(message):
     print(f"ALERT: {message}")
 
-def check_resources():
 
+def check_resources():
     config = load_config(CONFIG_FILE)
     ram_threshold = config.get('ram_threshold', 20)
     ram_usage = psutil.virtual_memory().percent
