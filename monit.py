@@ -14,6 +14,7 @@ parser = argparse.ArgumentParser(description='Linux Monitoring Tool')
 parser.add_argument('command', choices=['check', 'list', 'get_last', 'get_avg'],
                     help='Command to execute (check, list, get_last, get_avg)')
 args, unknown = parser.parse_known_args()
+print(args)
 hours = 1
 
 if args.command == 'get_avg' and unknown:
