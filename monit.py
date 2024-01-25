@@ -18,10 +18,8 @@ hours = 1
 
 if args.command == 'get_avg' and unknown:
     last_arg = unknown[-1]
-    print(last_arg)
     if last_arg.isdigit():
         hours = int(last_arg)
-        print(hours)
     else:
         hours = 1
 
@@ -170,7 +168,7 @@ def main():
         'check': check_resources,
         'list': list_reports,
         'get_last': get_last_report,
-        'get_avg': get_avg_report(1)
+        'get_avg': get_avg_report(hours)
     }
 
     if args.command in commands:
