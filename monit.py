@@ -21,6 +21,7 @@ if args.command == 'get_avg' and unknown:
     print(last_arg)
     if last_arg.isdigit():
         hours = int(last_arg)
+        print(hours)
     else:
         hours = 1
 
