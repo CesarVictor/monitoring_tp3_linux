@@ -162,7 +162,7 @@ def main():
 
     if args.command in commands:
         log_command_call(args.command)
-        result = commands[args.command]()
+        result = commands[args.command]
         print(result)
     else:
         print("Invalid command")
