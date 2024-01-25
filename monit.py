@@ -102,6 +102,7 @@ def send_alert(message):
 
 
 def check_resources():
+    print("Checking resources")
     config = load_config(CONFIG_FILE)
     ram_threshold = config.get('ram_threshold', 20)
     ram_usage = psutil.virtual_memory().percent
@@ -149,6 +150,7 @@ def list_reports():
 
 
 def get_last_report():
+    print("Getting last report")
     reports = list_reports()
     if reports:
         last_report_path = os.path.join(REPORT_DIR, reports[-1])
