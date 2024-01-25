@@ -25,7 +25,8 @@ if args.command == 'get_avg' and unknown:
 
 MONIT_DIR = '/var/monit'
 REPORT_DIR = os.path.join(MONIT_DIR, 'reports')
-CONFIG_FILE = '/etc/monit/config.json'
+CONFIG_DIR = '/etc/monit'
+CONFIG_FILE = os.path.join(CONFIG_DIR, 'config.json')
 LOG_DIR = '/var/log/monit'
 LOG_FILE = os.path.join(LOG_DIR, 'monit.log')
 
@@ -39,11 +40,27 @@ def create_report_dir():
     if not os.path.exists(REPORT_DIR):
         os.makedirs(REPORT_DIR)
 
+def create_config_dir():
+    if not os.path.exists(CONFIG_DIR):
+        os.makedirs(CONFIG_DIR)
 
 def create_log_dir():
     if not os.path.exists(LOG_DIR):
         os.makedirs(LOG_DIR)
         print("Create log")
+
+
+def create_config_file():
+    if not os.path.exists(CONFIG_FILE):
+        config_data = {
+            'ram_threshold': 20,
+            'disk_threshold': 20,
+            'cpu_threshold': 20,
+            'tcp_ports': [80, 443]
+        }
+        with open(CONFIG_FILE, 'w') as config_file:
+            json.dump(config_data, config_file)
+            print("Create config file")
 
 
 def setup_logging():
@@ -63,6 +80,7 @@ def log_command_call(command):
     logging.info(f"Command called: {command}")
 
 def load_config(file_path):
+    if not os.path.exists(file_path):
     try:
         with open(file_path, 'r') as config_file:
             config_data = json.load(config_file)
@@ -166,6 +184,7 @@ def get_avg_report(hours=1):
 def main():
     create_monit_dir()
     create_report_dir()
+    create_config_dir()
     setup_logging()
 
     commands = {
