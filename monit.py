@@ -77,16 +77,12 @@ def send_alert(message):
 def check_resources():
 
     config = load_config(CONFIG_FILE)
-
-    # Get ports to monitor from the configuration
-    tcp_ports = config.get('ports_to_monitor', [])
-
     ram_threshold = config.get('ram_threshold', 20)
+    ram_usage = psutil.virtual_memory().percent
 
     if ram_usage > ram_threshold:
         alert_message = f"Critical Alert: RAM usage exceeded the threshold ({ram_threshold}%): {ram_usage}%"
         send_alert(alert_message)
-    ram_usage = psutil.virtual_memory().percent
     disk_usage = psutil.disk_usage('/').percent
     cpu_usage = psutil.cpu_percent(interval=1)
     tcp_ports = [80, 443]
