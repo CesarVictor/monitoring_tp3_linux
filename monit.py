@@ -1,4 +1,6 @@
 import json
+import sys
+
 import psutil
 import os
 import subprocess
@@ -12,6 +14,17 @@ parser = argparse.ArgumentParser(description='Linux Monitoring Tool')
 parser.add_argument('command', choices=['check', 'list', 'get_last', 'get_avg'],
                     help='Command to execute (check, list, get_last, get_avg)')
 args = parser.parse_args()
+
+hours = 1
+
+if args.command == 'get_avg':
+    last_arg = sys.argv[-1]
+    print(last_arg)
+    if last_arg.isdigit():
+        hours = int(last_arg)
+    else:
+        hours = 1
+
 
 MONIT_DIR = '/var/monit'
 REPORT_DIR = os.path.join(MONIT_DIR, 'reports')
