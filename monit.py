@@ -153,9 +153,9 @@ def main():
     setup_logging()
 
     commands = {
-        'check': check_resources,
-        'list': list_reports,
-        'get_last': get_last_report,
+        'check': check_resources(),
+        'list': list_reports(),
+        'get_last': get_last_report(),
         'get_avg': get_avg_report(hours)
     }
 
