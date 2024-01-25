@@ -10,9 +10,6 @@ import uuid
 import argparse
 import logging
 
-
-
-
 parser = argparse.ArgumentParser(description='Linux Monitoring Tool')
 parser.add_argument('command', choices=['check', 'list', 'get_last', 'get_avg'],
                     help='Command to execute (check, list, get_last, get_avg)')
@@ -74,6 +71,7 @@ def check_resources():
     port_status = {port: is_port_open(port) for port in tcp_ports}
     report = create_report(ram_usage, disk_usage, cpu_usage, port_status)
     save_report(report)
+    print(report)
     return report
 
 
