@@ -53,16 +53,12 @@ def create_log_dir():
 
 
 def create_config_file():
-    if not os.path.exists(CONFIG_FILE):
-        config_data = {
-            'ram_threshold': 20,
-            'disk_threshold': 20,
-            'cpu_threshold': 20,
-            'tcp_ports': [80, 443]
-        }
-        with open(CONFIG_FILE, 'w') as config_file:
-            json.dump(config_data, config_file)
-            print("Create config file")
+    config = {
+        'ram_threshold': 20
+    }
+    with open(CONFIG_FILE, 'w') as config_file:
+        json.dump(config, config_file)
+
 
 
 def setup_logging():
@@ -83,7 +79,6 @@ def log_command_call(command):
 
 
 def load_config(file_path):
-    create_config_file()
     try:
         with open(CONFIG_FILE, 'r') as config_file:
             config_data = json.load(config_file)
