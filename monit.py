@@ -44,6 +44,7 @@ def create_report_dir():
 def create_config_dir():
     if not os.path.exists(CONFIG_DIR):
         os.makedirs(CONFIG_DIR)
+        create_config_file()
 
 
 def create_log_dir():
@@ -54,7 +55,8 @@ def create_log_dir():
 
 def create_config_file():
     config = {
-        'ram_threshold': 20
+        'ram_threshold': 20,
+        'tcp_ports': [80, 443]
     }
     with open(CONFIG_FILE, 'w') as config_file:
         json.dump(config, config_file)
