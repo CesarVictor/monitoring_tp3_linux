@@ -110,7 +110,7 @@ def list_reports():
 def get_last_report():
     reports = list_reports()
     if reports:
-        last_report_path = os.path.join(REPORT_DIR, max(reports))
+        last_report_path = os.path.join(REPORT_DIR, reports[-1])
         with open(last_report_path, 'r') as file:
             return json.load(file)
     else:
