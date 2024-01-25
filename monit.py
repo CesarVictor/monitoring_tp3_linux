@@ -88,6 +88,9 @@ def load_config(file_path):
     except FileNotFoundError:
         print(f"Config file not found at {file_path}")
         sys.exit(1)
+    except json.JSONDecodeError as e:
+        print(f"Error decoding JSON in {file_path}: {e}")
+        sys.exit(1)
 
 
 def send_alert(message):
