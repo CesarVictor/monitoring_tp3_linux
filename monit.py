@@ -1,9 +1,7 @@
 import json
-import sys
 
 import psutil
 import os
-import subprocess
 import datetime
 import socket
 import uuid
@@ -42,11 +40,12 @@ def create_report_dir():
         os.makedirs(REPORT_DIR)
 
 
-def create_config_dir():
+def create_config():
     if not os.path.exists(CONFIG_DIR):
         os.makedirs(CONFIG_DIR)
-        print("Create config")
         create_config_file()
+        print("Create config")
+
 
 
 def create_log_dir():
@@ -62,7 +61,6 @@ def create_config_file():
     }
     with open(CONFIG_FILE, 'w') as config_file:
         json.dump(config, config_file)
-
 
 
 def setup_logging():
@@ -89,12 +87,6 @@ def load_config(file_path):
         return config_data
     except FileNotFoundError:
         print(f"Config file not found at {file_path}. Creating a default config.")
-        create_config_file()
-        return load_config(file_path)
-    except json.JSONDecodeError as e:
-        print(f"Error decoding JSON in {file_path}: {e}. Creating a default config.")
-        create_config_file()
-        return load_config(file_path)
 
 
 def send_alert(message):
@@ -193,8 +185,7 @@ def get_avg_report(hours=1):
 
 def main():
     create_monit_dir()
-    create_report_dir()
-    create_config_dir()
+    create_config()
     setup_logging()
 
     commands = {
