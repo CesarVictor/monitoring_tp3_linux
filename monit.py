@@ -44,6 +44,7 @@ def create_report_dir():
 def create_config_dir():
     if not os.path.exists(CONFIG_DIR):
         os.makedirs(CONFIG_DIR)
+        print("Create config")
         create_config_file()
 
 
@@ -86,11 +87,13 @@ def load_config(file_path):
             config_data = json.load(config_file)
         return config_data
     except FileNotFoundError:
-        print(f"Config file not found at {file_path}")
-        sys.exit(1)
+        print(f"Config file not found at {file_path}. Creating a default config.")
+        create_config_file()
+        return load_config(file_path)
     except json.JSONDecodeError as e:
-        print(f"Error decoding JSON in {file_path}: {e}")
-        sys.exit(1)
+        print(f"Error decoding JSON in {file_path}: {e}. Creating a default config.")
+        create_config_file()
+        return load_config(file_path)
 
 
 def send_alert(message):
