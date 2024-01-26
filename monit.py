@@ -62,8 +62,30 @@ def get_unique_id():
 def log_command_call(command):
     logging.info(f"Command called: {command}")
 
+def load_config(file_path):
+    try:
+        with open(file_path, 'r') as config_file:
+            config_data = json.load(config_file)
+        return config_data
+    except FileNotFoundError:
+        print(f"Config file not found at {file_path}")
+        sys.exit(1)
+
+def send_alert(message):
+    print(f"ALERT: {message}")
 
 def check_resources():
+
+    config = load_config(CONFIG_FILE)
+
+    # Get ports to monitor from the configuration
+    tcp_ports = config.get('ports_to_monitor', [])
+
+    ram_threshold = config.get('ram_threshold', 20)
+
+    if ram_usage > ram_threshold:
+        alert_message = f"Critical Alert: RAM usage exceeded the threshold ({ram_threshold}%): {ram_usage}%"
+        send_alert(alert_message)
     ram_usage = psutil.virtual_memory().percent
     disk_usage = psutil.disk_usage('/').percent
     cpu_usage = psutil.cpu_percent(interval=1)
