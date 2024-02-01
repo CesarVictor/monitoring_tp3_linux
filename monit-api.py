@@ -5,33 +5,20 @@ import os
 app = Flask(__name__)
 app.secret_key = b'secret_key'
 
-
-
-def reports_json():
-    reports = []
-    for filename in os.listdir(REPORT_DIR):
-        report_path = os.path.join(REPORT_DIR, filename)
-        with open(report_path, 'r') as report_file:
-            report = json.load(report_file)
-            reports.append(report)
-    return reports
-
-
-def install_dependencies():
-    os.system('apt-get install -y python3 python3-pip')
-    os.system('pip3 install psutil')
-    os.system('pip3 install flask')
+MONIT_DIR = '/var/monit'
+REPORT_DIR = os.path.join(MONIT_DIR, 'reports')
 
 
 @app.route('/reports', methods=['GET'])
 def get_reports():
-    with open('reports.json', 'r') as file:
+    file_report = os.path.join(REPORT_DIR, 'reports.json')
+    with open(file_report, 'r') as file:
         reports = json.load(file)
         return jsonify(reports)
 
 
 @app.route('/reports/<int:report_id>', methods=['GET'])
-def get_report(report_id):
+def get_report(report_id=None):
     with open('reports.json', 'r') as file:
         reports = json.load(file)
         for report in reports:
@@ -42,5 +29,4 @@ def get_report(report_id):
 
 
 if __name__ == '__main__':
-    install_dependencies()
-    app.run(host='0.0.0.0', port=80, debug=True)
+    app.run(host='127.0.0.1', port=80, debug=True)
