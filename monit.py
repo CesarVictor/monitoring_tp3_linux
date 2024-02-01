@@ -115,20 +115,12 @@ def check_resources():
     cpu_usage = psutil.cpu_percent(interval=1)
     tcp_ports = [80, 443]
     port_status = {port: is_port_open(port) for port in tcp_ports}
-    report_id = get_unique_id()
-    timestamp = get_timestamp()
-    report = create_report(report_id, timestamp, ram_usage, disk_usage, cpu_usage, port_status)
+    report = create_report(ram_usage, disk_usage, cpu_usage, port_status)
     save_report(report)
     return report
 
 
-def create_report(report_id, timestamp, ram_usage=None, disk_usage=None, cpu_usage=None, port_status=None):
-    if report_id and timestamp:
-        print("Creating report index")
-        return {
-            'id': report_id,
-            'timestamp': timestamp
-        }
+def create_report(ram_usage, disk_usage, cpu_usage, port_status):
     return {
         'timestamp': get_timestamp(),
         'id': get_unique_id(),
@@ -157,10 +149,7 @@ def save_report(report):
     if os.path.exists(all_reports_file):
         with open(all_reports_file, 'r') as file:
             reports_list = json.load(file)
-    reports_list.append({
-        'id': report['id'],
-        'timestamp': report['timestamp']
-    })
+    reports_list.append(report)
     with open(all_reports_file, 'w') as file:
         json.dump(reports_list, file)
 
