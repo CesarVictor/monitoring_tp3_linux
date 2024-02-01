@@ -143,13 +143,18 @@ def is_port_open(port):
 def save_report(report):
     report_path = os.path.join(REPORT_DIR, f"{report['id']}.json")
     all_reports_file = os.path.join(REPORT_DIR, 'reports.json')
+
     with open(report_path, 'w') as file:
         json.dump(report, file)
+
     reports_list = []
+
     if os.path.exists(all_reports_file):
         with open(all_reports_file, 'r') as file:
             reports_list = json.load(file)
-    reports_list.append(report)
+
+    reports_list.append({'id': report['id'], 'timestamp': report['timestamp']}'})
+
     with open(all_reports_file, 'w') as file:
         json.dump(reports_list, file)
 
