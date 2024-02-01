@@ -36,10 +36,6 @@ def install_dependencies():
     os.system('pip3 install flask')
 
 
-
-
-
-
 def create_monit_dir():
     if not os.path.exists(MONIT_DIR):
         os.makedirs(MONIT_DIR)
@@ -116,7 +112,8 @@ def check_resources():
     tcp_ports = [80, 443]
     port_status = {port: is_port_open(port) for port in tcp_ports}
     report = create_report(ram_usage, disk_usage, cpu_usage, port_status)
-    save_report(report)
+    report_index = {report['timestamp'], report['id']}
+    save_report(report, report_index)
     return report
 
 
@@ -140,7 +137,7 @@ def is_port_open(port):
         return False
 
 
-def save_report(report):
+def save_report(report, report_index):
     report_path = os.path.join(REPORT_DIR, f"{report['id']}.json")
     all_reports_file = os.path.join(REPORT_DIR, 'reports.json')
     with open(report_path, 'w') as file:
@@ -149,7 +146,7 @@ def save_report(report):
     if os.path.exists(all_reports_file):
         with open(all_reports_file, 'r') as file:
             reports_list = json.load(file)
-    reports_list.append(report)
+    reports_list.append(report_index)
 
     with open(all_reports_file, 'w') as file:
         json.dump(reports_list, file)
