@@ -112,7 +112,7 @@ def check_resources():
     tcp_ports = [80, 443]
     port_status = {port: is_port_open(port) for port in tcp_ports}
     report = create_report(ram_usage, disk_usage, cpu_usage, port_status)
-    report_index = {report['timestamp'], report['id']}
+    report_index = {'timestamp': report['timestamp'], 'id': report['id']}
     save_report(report, report_index)
     return report
 
@@ -147,7 +147,6 @@ def save_report(report, report_index):
         with open(all_reports_file, 'r') as file:
             reports_list = json.load(file)
     reports_list.append(report_index)
-
     with open(all_reports_file, 'w') as file:
         json.dump(reports_list, file)
 
