@@ -112,6 +112,7 @@ def check_resources():
     tcp_ports = [80, 443]
     port_status = {port: is_port_open(port) for port in tcp_ports}
     report = create_report(ram_usage, disk_usage, cpu_usage, port_status)
+    print(report)
     report_index = {'timestamp': report['timestamp'], 'id': report['id']}
     save_report(report, report_index)
     return report
