@@ -192,11 +192,15 @@ def main():
         'check': check_resources,
         'list': list_reports,
         'get_last': get_last_report,
-        'get_avg': get_avg_report(hours)
+        'get_avg': get_avg_report
     }
 
     if args.command in commands:
         log_command_call(args.command)
+        result = None
+        if args.command == 'get_avg':
+            print(hours)
+            result = commands[args.command](hours)
         result = commands[args.command]()
         print(result)
     else:
