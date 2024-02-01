@@ -19,7 +19,9 @@ def get_reports():
 
 @app.route('/reports/<int:report_id>', methods=['GET'])
 def get_report(report_id=None):
-    file_report = os.path.join(REPORT_DIR, report_id, '.json')
+    report_filename = f'{report_id}.json'
+    file_report = os.path.join(REPORT_DIR, report_filename)
+    print(file_report)
     if os.path.exists(file_report):
         with open(file_report, 'r') as file:
             report = json.load(file)
