@@ -1,8 +1,9 @@
 [Unit]
-Description=Run monit.service every 10 minutes
+Description=Run monit.service every 2 minutes
 
 [Timer]
-OnCalendar=*:0/10
+OnBootSec=0min
+OnUnitActiveSec=2min
 Unit=monit.service
 
 [Install]
