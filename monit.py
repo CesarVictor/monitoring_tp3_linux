@@ -153,7 +153,7 @@ def save_report(report):
         with open(all_reports_file, 'r') as file:
             reports_list = json.load(file)
 
-    reports_list.append({'id': report['id'], 'timestamp': report['timestamp']}'})
+    reports_list.append({'id': report['id'], 'timestamp': report['timestamp']})
 
     with open(all_reports_file, 'w') as file:
         json.dump(reports_list, file)
