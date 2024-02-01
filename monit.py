@@ -30,6 +30,15 @@ LOG_DIR = '/var/log/monit'
 LOG_FILE = os.path.join(LOG_DIR, 'monit.log')
 
 
+
+def install_dependencies():
+    os.system('apt-get install -y python3 python3-pip')
+    os.system('pip3 install psutil')
+    os.system('pip3 install flask')
+
+
+
+
 def create_monit_dir():
     if not os.path.exists(MONIT_DIR):
         os.makedirs(MONIT_DIR)
