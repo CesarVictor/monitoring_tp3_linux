@@ -30,11 +30,12 @@ LOG_DIR = '/var/log/monit'
 LOG_FILE = os.path.join(LOG_DIR, 'monit.log')
 
 
-
 def install_dependencies():
     os.system('apt-get install -y python3 python3-pip')
     os.system('pip3 install psutil')
     os.system('pip3 install flask')
+
+
 
 
 
@@ -54,7 +55,6 @@ def create_config():
         os.makedirs(CONFIG_DIR)
         create_config_file()
         print("Create config")
-
 
 
 def create_log_dir():
@@ -142,7 +142,10 @@ def is_port_open(port):
 
 def save_report(report):
     report_path = os.path.join(REPORT_DIR, f"{report['id']}.json")
+    all_reports_file = os.path.join(REPORT_DIR, 'reports.json')
     with open(report_path, 'w') as file:
+        json.dump(report, file)
+    with open(all_reports_file, 'w') as file:
         json.dump(report, file)
 
 

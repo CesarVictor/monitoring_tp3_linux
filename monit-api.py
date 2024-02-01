@@ -6,6 +6,17 @@ app = Flask(__name__)
 app.secret_key = b'secret_key'
 
 
+
+def reports_json():
+    reports = []
+    for filename in os.listdir(REPORT_DIR):
+        report_path = os.path.join(REPORT_DIR, filename)
+        with open(report_path, 'r') as report_file:
+            report = json.load(report_file)
+            reports.append(report)
+    return reports
+
+
 def install_dependencies():
     os.system('apt-get install -y python3 python3-pip')
     os.system('pip3 install psutil')
