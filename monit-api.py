@@ -19,14 +19,13 @@ def get_reports():
 
 @app.route('/reports/<int:report_id>', methods=['GET'])
 def get_report(report_id=None):
-    with open('reports.json', 'r') as file:
-        reports = json.load(file)
-        for report in reports:
-            if report['id'] == report_id:
-                return jsonify(report)
-            else:
-                abort(404)
-
+    file_report = os.path.join(REPORT_DIR, report_id, '.json')
+    if os.path.exists(file_report):
+        with open(file_report, 'r') as file:
+            report = json.load(file)
+        return jsonify(report)
+    else:
+        abort(404)
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=80, debug=True)
