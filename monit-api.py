@@ -17,7 +17,7 @@ def get_reports():
         return jsonify(reports)
 
 
-@app.route('/reports/<int:report_id>', methods=['GET'])
+@app.route('/reports/<report_id>', methods=['GET'])
 def get_report(report_id=None):
     report_filename = f'{report_id}.json'
     file_report = os.path.join(REPORT_DIR, report_filename)
