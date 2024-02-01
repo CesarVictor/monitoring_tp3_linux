@@ -145,7 +145,7 @@ def save_report(report):
     all_reports_file = os.path.join(REPORT_DIR, 'reports.json')
     with open(report_path, 'w') as file:
         json.dump(report, file)
-    with open(all_reports_file, 'w') as file:
+    with open(all_reports_file, 'a') as file:
         json.dump(report, file)
 
 
