@@ -115,12 +115,20 @@ def check_resources():
     cpu_usage = psutil.cpu_percent(interval=1)
     tcp_ports = [80, 443]
     port_status = {port: is_port_open(port) for port in tcp_ports}
-    report = create_report(ram_usage, disk_usage, cpu_usage, port_status)
+    report_id = get_unique_id()
+    timestamp = get_timestamp()
+    report = create_report(report_id, timestamp, ram_usage, disk_usage, cpu_usage, port_status)
     save_report(report)
     return report
 
 
-def create_report(ram_usage, disk_usage, cpu_usage, port_status):
+def create_report(report_id, timestamp, ram_usage=None, disk_usage=None, cpu_usage=None, port_status=None):
+    if report_id and timestamp:
+        print("Creating report index")
+        return {
+            'id': report_id,
+            'timestamp': timestamp
+        }
     return {
         'timestamp': get_timestamp(),
         'id': get_unique_id(),
